@@ -5,20 +5,20 @@ DATA_URL = "https://raw.githubusercontent.com/Prodigy-InfoTech/data-science-data
 
 
 def main():
-    # Load the World Bank population dataset from the provided GitHub Task 1 folder
+    
     df = pd.read_csv(DATA_URL, skiprows=4)
 
-    # Keep only numeric year columns and choose the most recent year
+   
     year_columns = [col for col in df.columns if str(col).isdigit()]
     if not year_columns:
         raise ValueError("No year columns found in the dataset.")
 
     latest_year = max(year_columns, key=int)
 
-    # Extract the population values for that year
+    
     population = pd.to_numeric(df[latest_year], errors='coerce').dropna()
 
-    # Plot a histogram to show the distribution of country populations
+    
     plt.style.use("dark_background")
     fig, ax = plt.subplots(figsize=(12, 7), facecolor="#1b153f")
     ax.set_facecolor("#1b153f")
