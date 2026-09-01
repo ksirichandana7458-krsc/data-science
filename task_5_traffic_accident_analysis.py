@@ -32,7 +32,7 @@ LOCAL_CANDIDATES = [
 
 
 def find_dataset_file() -> Path | None:
-    """Locate the dataset in the workspace or download it if available via Kaggle API."""
+   
     for candidate in LOCAL_CANDIDATES:
         if candidate.exists():
             return candidate
@@ -62,7 +62,7 @@ def find_dataset_file() -> Path | None:
 
 
 def load_data() -> pd.DataFrame:
-    """Load the accidents dataset and validate required columns."""
+    
     dataset_path = find_dataset_file()
     if dataset_path is None:
         raise FileNotFoundError(
@@ -79,10 +79,10 @@ def load_data() -> pd.DataFrame:
 
 
 def clean_data(df: pd.DataFrame) -> pd.DataFrame:
-    """Clean and prepare the dataset for analysis."""
+   
     data = df.copy()
 
-    # Standardize date/time and text columns.
+  
     data["Start_Time"] = pd.to_datetime(data["Start_Time"], errors="coerce")
     data["City"] = data["City"].fillna("Unknown").astype(str).str.strip()
     data["State"] = data["State"].fillna("Unknown").astype(str).str.strip()
@@ -94,13 +94,13 @@ def clean_data(df: pd.DataFrame) -> pd.DataFrame:
     data["Day_of_Week"] = data["Start_Time"].dt.day_name()
     data["Month"] = data["Start_Time"].dt.month_name()
 
-    # Keep only relevant rows for analysis.
+    
     data = data.dropna(subset=["Start_Time", "City", "State"]).copy()
     return data
 
 
 def print_overview(df: pd.DataFrame) -> None:
-    """Print summary statistics for the dataset."""
+    
     print("\n=== Dataset Overview ===")
     print(df.head(5).to_string(index=False))
     print(f"\nRows: {len(df)}")
@@ -112,7 +112,7 @@ def print_overview(df: pd.DataFrame) -> None:
 
 
 def plot_accident_hotspots(df: pd.DataFrame, output_dir: Path) -> None:
-    """Plot the most accident-prone cities and states."""
+   
     city_counts = df["City"].value_counts().head(10).reset_index()
     city_counts.columns = ["City", "Accidents"]
 
@@ -142,7 +142,7 @@ def plot_accident_hotspots(df: pd.DataFrame, output_dir: Path) -> None:
 
 
 def plot_weather_patterns(df: pd.DataFrame, output_dir: Path) -> None:
-    """Plot accident distribution by weather condition."""
+    
     weather_counts = df["Weather_Condition"].value_counts().head(10).reset_index()
     weather_counts.columns = ["Weather_Condition", "Accidents"]
 
@@ -160,7 +160,7 @@ def plot_weather_patterns(df: pd.DataFrame, output_dir: Path) -> None:
 
 
 def plot_road_conditions(df: pd.DataFrame, output_dir: Path) -> None:
-    """Plot accident counts by road condition."""
+    
     road_counts = df["Road_Condition"].value_counts().head(10).reset_index()
     road_counts.columns = ["Road_Condition", "Accidents"]
 
@@ -178,7 +178,7 @@ def plot_road_conditions(df: pd.DataFrame, output_dir: Path) -> None:
 
 
 def plot_time_of_day_patterns(df: pd.DataFrame, output_dir: Path) -> None:
-    """Plot accident frequency over the day."""
+    
     hourly = df.groupby("Hour").size().reset_index(name="Accidents")
 
     plt.figure(figsize=(12, 6))
@@ -196,7 +196,7 @@ def plot_time_of_day_patterns(df: pd.DataFrame, output_dir: Path) -> None:
 
 
 def plot_severity_by_weather(df: pd.DataFrame, output_dir: Path) -> None:
-    """Visualize average accident severity for different weather conditions."""
+    
     severity_weather = (
         df.groupby("Weather_Condition", as_index=False)["Severity"]
         .mean()
@@ -218,7 +218,7 @@ def plot_severity_by_weather(df: pd.DataFrame, output_dir: Path) -> None:
 
 
 def summarize_key_findings(df: pd.DataFrame) -> None:
-    """Print the key analytical conclusions from the cleaned dataset."""
+    
     city_hotspot = df["City"].value_counts().idxmax()
     city_count = df["City"].value_counts().max()
     peak_hour = df["Hour"].value_counts().idxmax()
@@ -231,7 +231,7 @@ def summarize_key_findings(df: pd.DataFrame) -> None:
     print(f"The most frequent weather condition is {most_common_weather}.")
     print(f"The most common road condition is {most_common_road_condition}.")
 
-    # Day-of-week risk pattern.
+  
     weekday_counts = df["Day_of_Week"].value_counts().reindex([
         "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"
     ], fill_value=0)
