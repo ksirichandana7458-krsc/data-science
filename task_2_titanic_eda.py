@@ -21,25 +21,25 @@ DATASET_URL = (
 
 
 def load_data():
-    """Load the Titanic dataset from the GitHub source."""
+   
     return pd.read_csv(DATASET_URL)
 
 
 def clean_data(df):
-    """Clean missing values and create a few derived features for analysis."""
+    
     df_clean = df.copy()
 
-    # Fill missing values with sensible defaults
+    
     df_clean["Age"] = df_clean["Age"].fillna(df_clean["Age"].median())
     df_clean["Embarked"] = df_clean["Embarked"].fillna(df_clean["Embarked"].mode()[0])
     df_clean["Fare"] = df_clean["Fare"].fillna(df_clean["Fare"].median())
     df_clean["Cabin"] = df_clean["Cabin"].fillna("Unknown")
 
-    # Normalize strings
+    
     df_clean["Sex"] = df_clean["Sex"].str.title()
     df_clean["Embarked"] = df_clean["Embarked"].str.title()
 
-    # Derived features
+   
     df_clean["FamilySize"] = df_clean["SibSp"] + df_clean["Parch"] + 1
     df_clean["IsAlone"] = np.where(df_clean["FamilySize"] == 1, 1, 0)
 
@@ -47,7 +47,7 @@ def clean_data(df):
 
 
 def print_summary(df):
-    """Print dataset summary information."""
+    
     print("\n=== Dataset Overview ===")
     print(df.head())
     print("\n=== Dataset Shape ===")
@@ -141,7 +141,7 @@ def plot_correlation_heatmap(df, output_dir):
 
 
 def show_key_insights(df):
-    """Display a few observed trends from the cleaned dataset."""
+    
     print("\n=== Key Insights ===")
     print("Overall survival rate:", round(df["Survived"].mean() * 100, 2), "%")
     print("Survival rate by sex:")
