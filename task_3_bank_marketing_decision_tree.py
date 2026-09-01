@@ -26,15 +26,15 @@ DATASET_URL = (
 
 
 def load_data():
-    """Load the Bank Marketing dataset from the GitHub source."""
+    
     return pd.read_csv(DATASET_URL, sep=';')
 
 
 def prepare_data(df):
-    """Prepare features and target for modeling."""
+    
     df_clean = df.copy()
 
-    # Convert target to binary numeric values.
+    
     target_map = {"yes": 1, "no": 0}
     df_clean["y"] = df_clean["y"].map(target_map)
 
@@ -55,7 +55,7 @@ def prepare_data(df):
 
 
 def train_model(X, y, preprocessor):
-    """Train and return a decision tree classifier pipeline."""
+
     X_train, X_test, y_train, y_test = train_test_split(
         X, y, test_size=0.2, random_state=42, stratify=y
     )
@@ -114,7 +114,7 @@ def train_model(X, y, preprocessor):
 
 
 def show_dataset_summary(df):
-    """Print a quick overview of the dataset."""
+   
     print("\n=== Dataset Overview ===")
     print(df.head())
     print("\nDataset shape:", df.shape)
