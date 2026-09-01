@@ -21,24 +21,23 @@ DATASET_URL = (
 
 
 def load_data():
-    """Load the social media sentiment dataset."""
     df = pd.read_csv(DATASET_URL, header=None, names=["tweet_id", "entity", "sentiment", "text"], encoding="latin1")
     return df
 
 
 def clean_data(df):
-    """Clean and normalize dataset values for analysis."""
+    
     df_clean = df.copy()
 
-    # Remove empty rows
+   
     df_clean = df_clean.dropna(subset=["text", "sentiment", "entity"]).copy()
 
-    # Normalize sentiment labels and entity names
+  
     df_clean["sentiment"] = df_clean["sentiment"].str.strip().str.title()
     df_clean["entity"] = df_clean["entity"].astype(str).str.strip()
     df_clean["text"] = df_clean["text"].astype(str).str.strip()
 
-    # Basic text cleaning
+  
     def clean_text(text):
         text = text.lower()
         text = re.sub(r"http\S+|www\.\S+", " ", text)
@@ -55,7 +54,7 @@ def clean_data(df):
 
 
 def print_overview(df):
-    """Print a quick description of the dataset."""
+    
     print("\n=== Dataset Overview ===")
     print(df.head().to_string(index=False))
     print("\nDataset shape:", df.shape)
@@ -66,7 +65,7 @@ def print_overview(df):
 
 
 def show_top_entities(df, output_dir):
-    """Visualize the most frequently discussed entities."""
+   
     entity_count = df["entity"].value_counts().head(10).reset_index()
     entity_count.columns = ["entity", "tweet_count"]
 
@@ -84,7 +83,7 @@ def show_top_entities(df, output_dir):
 
 
 def plot_sentiment_distribution(df, output_dir):
-    """Plot counts of each sentiment label."""
+    
     sentiment_order = ["Positive", "Neutral", "Negative", "Irrelevant"]
     sentiment_counts = df["sentiment"].value_counts().reindex(sentiment_order, fill_value=0)
 
@@ -102,7 +101,7 @@ def plot_sentiment_distribution(df, output_dir):
 
 
 def plot_entity_sentiment_breakdown(df, output_dir):
-    """Plot the most discussed entities and their sentiment mix."""
+    
     top_entities = df["entity"].value_counts().head(8).index.tolist()
     entity_sentiment = (
         df[df["entity"].isin(top_entities)]
@@ -124,7 +123,7 @@ def plot_entity_sentiment_breakdown(df, output_dir):
 
 
 def analyze_sentiment_trends(df):
-    """Compute sentiment shares for each entity and print insights."""
+    
     entity_summary = (
         df.groupby("entity")
         .agg(
@@ -154,7 +153,7 @@ def analyze_sentiment_trends(df):
 
 
 def plot_text_length_distribution(df, output_dir):
-    """Show text length distribution by sentiment."""
+  
     plt.figure(figsize=(10, 6))
     sns.boxplot(data=df, x="sentiment", y="text_length", palette="pastel")
     plt.title("Tweet Length by Sentiment")
